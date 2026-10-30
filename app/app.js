@@ -27,6 +27,7 @@
   var playing = null;    // channel object now playing
   var mode = 'setup';    // 'setup' | 'list' | 'play'
   var setupSel = 0;      // selected preset; PRESETS.length means the URL field
+  var loadedUrl = '';    // playlist URL that `channels` came from
   var hls = null;
   var bannerTimer = null;
 
@@ -85,12 +86,11 @@
   }
 
   function submitSetup() {
-    if (setupSel < PRESETS.length) {
-      loadPlaylist(PRESETS[setupSel].url);
-    } else {
-      var url = $('urlInput').value.trim();
-      if (url) loadPlaylist(url);
-    }
+    var url = setupSel < PRESETS.length ? PRESETS[setupSel].url : $('urlInput').value.trim();
+    if (!url) return;
+    // The playlist is already loaded: go back to its channels without a reload.
+    if (url === loadedUrl && channels.length) setMode('list');
+    else loadPlaylist(url);
   }
 
   // The Magic Remote pointer can click a playlist too.
@@ -122,6 +122,7 @@
         var list = parseM3U(text);
         if (!list.length) throw new Error('No channels found in this playlist');
         save(STORE_URL, url);
+        loadedUrl = url;
         msg.textContent = '';
         setChannels(list);
 
@@ -256,8 +257,7 @@
         setSetupSel(setupSel + 1);
         e.preventDefault();
       } else if (k === KEY.BACK || k === KEY.ESC) {
-        if (channels.length) setMode(playing ? 'play' : 'list');
-        else exitApp();
+        exitApp();
         e.preventDefault();
       }
       return;
@@ -273,12 +273,15 @@
       else if (k === KEY.LEFT) setGroup(groupIndex - 1);
       else if (k === KEY.RIGHT) setGroup(groupIndex + 1);
       else if (k === KEY.ENTER) {
-        if (visible[sel]) { play(visible[sel]); setMode('play'); }
+        // OK on the channel that already plays only hides the list.
+        if (visible[sel]) {
+          if (visible[sel] !== playing) play(visible[sel]);
+          setMode('play');
+        }
         e.preventDefault();
         return;
       } else if (k === KEY.BACK || k === KEY.ESC || k === KEY.BACKSPACE) {
-        if (playing) setMode('play');
-        else exitApp();
+        setMode('setup');
         e.preventDefault();
         return;
       } else return;

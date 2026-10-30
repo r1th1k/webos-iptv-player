@@ -95,7 +95,7 @@ If the `available` memory is low (for example, less than 300 MB), close other ap
 4. Install the app on the TV.
 
    ```bash
-   ares-install -d mytv dist/com.rithik.iptv_1.1.0_all.ipk
+   ares-install -d mytv dist/com.rithik.iptv_1.2.0_all.ipk
    ```
 
 5. Start the app. You can also start it from the TV home screen. Its name is **IPTV**.
@@ -122,10 +122,14 @@ To change the playlist buttons, edit the `PRESETS` list at the top of `app/app.j
 | Channel list | CH+ / CH- | Move 10 channels |
 | Channel list | Left / Right | Change the group |
 | Channel list | OK | Play the channel |
-| Channel list | Back | Hide the list (or exit if nothing plays) |
+| Channel list | OK on the playing channel | Hide the list |
+| Channel list | Back | Go to the playlists |
 | Playback | Up / Down, CH+ / CH- | Previous / next channel |
 | Playback | OK, Left, Right, Back | Show the channel list |
-| Any | Red | Change the playlist URL |
+| Setup | Back | Exit the app |
+| Any | Red | Go to the playlists |
+
+The Back button moves one screen back each time: video → channel list → playlists → exit. If you select the playlist that is already loaded, the app goes back to its channels at once, without a reload.
 
 ## 7. Keep the app installed
 
