@@ -10,6 +10,12 @@
   var STORE_LAST = 'iptv.last';
   var ROW_HEIGHT = 84;
 
+  // Playlists on the setup screen, so they need no typing.
+  var PRESETS = [
+    { name: 'All channels', note: 'iptv-org, every country (large list, slow to load)', url: 'https://iptv-org.github.io/iptv/index.m3u' },
+    { name: 'Tamil', note: 'iptv-org, Tamil language channels', url: 'https://iptv-org.github.io/iptv/languages/tam.m3u' }
+  ];
+
   var $ = function (id) { return document.getElementById(id); };
   var video = $('video');
 
@@ -20,6 +26,7 @@
   var sel = 0;           // selected index in `visible`
   var playing = null;    // channel object now playing
   var mode = 'setup';    // 'setup' | 'list' | 'play'
+  var setupSel = 0;      // selected preset; PRESETS.length means the URL field
   var hls = null;
   var bannerTimer = null;
 
@@ -45,14 +52,54 @@
     show($('setup'), m === 'setup');
     show($('list'), m === 'list');
     if (m === 'setup') {
-      var input = $('urlInput');
-      input.value = load(STORE_URL);
-      input.focus();
+      var saved = load(STORE_URL);
+      var p = presetIndex(saved);
+      $('urlInput').value = p < 0 ? saved : '';
+      setSetupSel(p < 0 && saved ? PRESETS.length : Math.max(0, p));
     } else {
       $('urlInput').blur();
     }
     if (m === 'list') renderList();
   }
+
+  // ---- setup screen ----
+
+  function presetIndex(url) {
+    for (var i = 0; i < PRESETS.length; i++) if (PRESETS[i].url === url) return i;
+    return -1;
+  }
+
+  function renderPresets() {
+    $('presets').innerHTML = PRESETS.map(function (p, i) {
+      return '<div class="preset' + (i === setupSel ? ' sel' : '') + '" data-i="' + i + '">' +
+        escapeHtml(p.name) + '<small>' + escapeHtml(p.note) + '</small></div>';
+    }).join('');
+  }
+
+  function setSetupSel(i) {
+    setupSel = Math.min(Math.max(0, i), PRESETS.length);
+    renderPresets();
+    var input = $('urlInput');
+    if (setupSel === PRESETS.length) input.focus();
+    else input.blur();
+  }
+
+  function submitSetup() {
+    if (setupSel < PRESETS.length) {
+      loadPlaylist(PRESETS[setupSel].url);
+    } else {
+      var url = $('urlInput').value.trim();
+      if (url) loadPlaylist(url);
+    }
+  }
+
+  // The Magic Remote pointer can click a playlist too.
+  $('presets').addEventListener('click', function (e) {
+    var el = e.target.closest('.preset');
+    if (!el) return;
+    setSetupSel(+el.getAttribute('data-i'));
+    submitSetup();
+  });
 
   function exitApp() {
     if (window.PalmSystem && window.PalmSystem.platformBack) window.PalmSystem.platformBack();
@@ -200,8 +247,13 @@
 
     if (mode === 'setup') {
       if (k === KEY.ENTER) {
-        var url = $('urlInput').value.trim();
-        if (url) loadPlaylist(url);
+        submitSetup();
+        e.preventDefault();
+      } else if (k === KEY.UP) {
+        setSetupSel(setupSel - 1);
+        e.preventDefault();
+      } else if (k === KEY.DOWN) {
+        setSetupSel(setupSel + 1);
         e.preventDefault();
       } else if (k === KEY.BACK || k === KEY.ESC) {
         if (channels.length) setMode(playing ? 'play' : 'list');
@@ -266,8 +318,5 @@
 
   var startUrl = launchParams().playlist || load(STORE_URL);
   setMode('setup');
-  if (startUrl) {
-    $('urlInput').value = startUrl;
-    loadPlaylist(startUrl);
-  }
+  if (startUrl) loadPlaylist(startUrl);
 })();

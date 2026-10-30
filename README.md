@@ -9,6 +9,7 @@ This tutorial shows the full procedure: from Developer Mode on the TV to the ins
 ## Features
 
 - Loads an M3U / M3U8 playlist from a URL.
+- Has playlist buttons on the setup screen, so you do not type the URL each time. The default buttons are two public [iptv-org](https://github.com/iptv-org/iptv) lists: all channels and Tamil channels.
 - Shows a channel list with logos and groups (`group-title`).
 - Uses the TV's own player for HLS (`.m3u8`) and MPEG-TS streams. If the native player fails on an HLS stream, the app tries [hls.js](https://github.com/video-dev/hls.js) one time.
 - Remembers the playlist and the last channel.
@@ -94,7 +95,7 @@ If the `available` memory is low (for example, less than 300 MB), close other ap
 4. Install the app on the TV.
 
    ```bash
-   ares-install -d mytv dist/com.rithik.iptv_1.0.0_all.ipk
+   ares-install -d mytv dist/com.rithik.iptv_1.1.0_all.ipk
    ```
 
 5. Start the app. You can also start it from the TV home screen. Its name is **IPTV**.
@@ -105,13 +106,18 @@ If the `available` memory is low (for example, less than 300 MB), close other ap
 
 ## 6. Use the app
 
-1. On the setup screen, select the URL field. The TV keyboard opens.
-2. Type your M3U playlist URL and press OK.
+1. On the setup screen, select a playlist button with Up and Down, then press OK.
+2. For another playlist, select the URL field at the bottom. The TV keyboard opens. Type the M3U playlist URL and press OK.
 3. Select a channel and press OK.
+
+The "All channels" list has more than 11,000 channels (2.6 MB). On a low-cost TV, it takes about 10 seconds to load.
+
+To change the playlist buttons, edit the `PRESETS` list at the top of `app/app.js`. Then package and install the app again (step 5).
 
 | Screen | Key | Action |
 |---|---|---|
-| Setup | OK | Load the playlist URL |
+| Setup | Up / Down | Select a playlist button or the URL field |
+| Setup | OK | Load the selected playlist |
 | Channel list | Up / Down | Select a channel |
 | Channel list | CH+ / CH- | Move 10 channels |
 | Channel list | Left / Right | Change the group |
