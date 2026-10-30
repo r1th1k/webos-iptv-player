@@ -170,3 +170,7 @@ ares-launch -d mytv com.rithik.iptv -p '{"playlist":"data:audio/x-mpegurl;base64
 | `tools/tv-eval.js` | Runs JavaScript in the app on the TV through `ares-inspect` |
 | `tools/make-icons.py` | Makes the app icons |
 | `test/m3u.test.js` | The parser tests |
+
+## License
+
+MIT, see [LICENSE](LICENSE). The bundled hls.js is Apache-2.0, see `app/lib/hls.LICENSE`.
