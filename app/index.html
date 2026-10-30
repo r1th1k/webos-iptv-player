@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>IPTV</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <video id="video" autoplay></video>
+
+  <div id="setup" class="screen hidden">
+    <h1>IPTV</h1>
+    <p>Type the URL of your M3U playlist, then press OK.</p>
+    <input id="urlInput" type="url" placeholder="http://example.com/playlist.m3u" spellcheck="false">
+    <p id="setupMsg" class="msg"></p>
+  </div>
+
+  <div id="list" class="hidden">
+    <div id="groupBar"><span class="arrow">&#9664;</span><span id="groupName"></span><span class="arrow">&#9654;</span></div>
+    <div id="rows"></div>
+    <div id="hint">OK: play &middot; &#9664;&#9654;: group &middot; Red: change playlist &middot; Back: hide</div>
+  </div>
+
+  <div id="banner" class="hidden"></div>
+  <div id="status" class="hidden"></div>
+
+  <script src="lib/hls.light.min.js"></script>
+  <script src="m3u.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

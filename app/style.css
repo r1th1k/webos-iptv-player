@@ -1,0 +1,98 @@
+html, body {
+  margin: 0;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background: #000;
+  color: #eee;
+  font-family: "LG Smart UI", "Museo Sans", sans-serif;
+}
+
+.hidden { display: none !important; }
+
+#video {
+  position: absolute;
+  inset: 0;
+  width: 1920px;
+  height: 1080px;
+  background: #000;
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  background: #101318;
+  padding: 160px 240px;
+  box-sizing: border-box;
+}
+.screen h1 { font-size: 72px; margin: 0 0 24px; }
+.screen p { font-size: 34px; color: #aab; }
+#urlInput {
+  width: 100%;
+  font-size: 40px;
+  padding: 20px 24px;
+  border: 4px solid #3a7bfd;
+  border-radius: 12px;
+  background: #1c2129;
+  color: #fff;
+  box-sizing: border-box;
+}
+.msg { min-height: 48px; }
+.msg.error { color: #ff7b7b; }
+
+#list {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 720px;
+  background: rgba(10, 12, 16, 0.92);
+  display: flex;
+  flex-direction: column;
+}
+#groupBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 36px 40px 20px;
+  font-size: 36px;
+  font-weight: bold;
+}
+#groupBar .arrow { color: #667; font-size: 26px; }
+#rows { flex: 1; overflow: hidden; }
+.row {
+  display: flex;
+  align-items: center;
+  height: 84px;
+  padding: 0 40px;
+  font-size: 32px;
+  white-space: nowrap;
+}
+.row .num { width: 90px; color: #778; font-size: 26px; }
+.row img { width: 96px; height: 54px; object-fit: contain; margin-right: 24px; }
+.row .logo-gap { width: 120px; }
+.row .name { overflow: hidden; text-overflow: ellipsis; }
+.row.sel { background: #3a7bfd; color: #fff; }
+.row.sel .num { color: #dde; }
+.row.playing .name::after { content: "  \25B6"; font-size: 24px; }
+#hint { padding: 20px 40px 32px; font-size: 22px; color: #778; }
+
+#banner {
+  position: absolute;
+  left: 60px;
+  bottom: 60px;
+  padding: 24px 36px;
+  background: rgba(10, 12, 16, 0.85);
+  border-radius: 12px;
+  font-size: 40px;
+}
+#status {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 24px 40px;
+  background: rgba(10, 12, 16, 0.85);
+  border-radius: 12px;
+  font-size: 34px;
+}
